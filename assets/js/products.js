@@ -1,5 +1,7 @@
 // Products page JavaScript
 
+
+
 let allProducts = []
 let filteredProducts = []
 let currentPage = 1
@@ -46,41 +48,41 @@ function displayProducts() {
   }
 
   grid.innerHTML = productsToShow
-    .map(
-      (product) => `
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card product-card animate-card">
-                <div class="product-image">
-                    <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 250px; object-fit: cover;">
-                    <div class="product-overlay">
-                        <button class="btn btn-light me-2" onclick="viewProductDetails(${product.id})">
-                            <i class="fas fa-eye me-2"></i>Quick View
-                        </button>
-                        <button class="btn btn-primary" onclick="addToCart(${product.id})">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text text-muted">${product.description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="product-price">$${product.price}</span>
-                        <div class="btn-group" role="group">
-                            <button class="btn btn-outline-primary btn-sm" onclick="addToWishlist(${product.id})">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="btn btn-primary btn-sm" onclick="addToCart(${product.id})">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
-    )
-    .join("")
+  .map(
+    (product) => `
+      <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card product-card animate-card">
+              <div class="product-image">
+                  <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 250px; object-fit: cover;">
+                  <div class="product-overlay">
+                      <button class="btn btn-light me-2" onclick="viewProductDetails(${product.id})">
+                          <i class="fas fa-eye me-2"></i>Quick View
+                      </button>
+                      <button class="btn btn-primary" onclick="addToCart(${product.id})">
+                          <i class="fas fa-shopping-cart"></i>
+                      </button>
+                  </div>
+              </div>
+              <div class="card-body">
+                  <h5 class="card-title">${product.name}</h5>
+                  <p class="card-text text-muted">${product.description}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                      <span class="product-price">$${product.price}</span>
+                      <div class="btn-group" role="group">
+                          <button class="btn btn-outline-primary btn-sm" onclick="addToWishlist(${product.id})">
+                              <i class="fas fa-heart"></i>
+                          </button>
+                          <button class="btn btn-primary btn-sm" onclick="addToCart(${product.id})">
+                              <i class="fas fa-shopping-cart"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `,
+  )
+  .join("")
 
   // Add animation to new cards
   const cards = grid.querySelectorAll(".product-card")

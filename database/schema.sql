@@ -52,3 +52,6 @@ VALUES
     ('Denim Jacket', 'Classic denim jacket with modern fit', 79.99, 'men', 1),
     ('Summer Floral Dress', 'Light and breezy dress perfect for summer', 59.99, 'women', 0),
     ('Designer Sunglasses', 'UV protection sunglasses with stylish frame', 129.99, 'accessories', 1);
+
+INSERT INTO users (first_name, last_name, email, password, role, status)
+VALUES ('sok','Dara', 'admin@gmail.com', '123 ==', 'admin', 'active');

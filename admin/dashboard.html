@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Product Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+    <h2 class="mb-4">Product Management Dashboard</h2>
+    <!-- Product Form -->
+    <form id="product-form" enctype="multipart/form-data" class="mb-4">
+        <input type="hidden" id="product-id">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input type="text" id="product-name" class="form-control" placeholder="Product Name" required>
+            </div>
+            <div class="col-md-2">
+                <input type="number" id="product-price" class="form-control" placeholder="Price" step="0.01" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="product-description" class="form-control" placeholder="Description" required>
+            </div>
+            <div class="col-md-2">
+                <input type="file" id="product-image" class="form-control" accept="image/*">
+            </div>
+            <div class="col-md-1 d-grid">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Product List -->
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle" id="products-table">
+            <thead class="table-light">
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="products-tbody">
+                <!-- Products will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const apiUrl = '../api/products.php';
+
+// Load products on page load
+window.addEventListener('DOMContentLoaded', loadProducts);
+
+async function loadProducts() {
+    const tbody = document.getElementById('products-tbody');
+    tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+    try {
+        const res = await fetch(apiUrl);
+        const products = await res.json();
+        tbody.innerHTML = '';
+        products.forEach(product => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><img src="${product.image}" alt="${product.name}" style="width:60px;height:60px;object-fit:cover;"></td>
+                    <td>${product.name}</td>
+                    <td>$${product.price}</td>
+                    <td>${product.description}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning me-2" onclick='editProduct(${JSON.stringify(product)})'>Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+        if (products.length === 0) tbody.innerHTML = '<tr><td colspan="5">No products found.</td></tr>';
+    } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5">Failed to load products.</td></tr>';
+    }
+}
+
+// Handle form submit
+const form = document.getElementById('product-form');
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('product-id').value;
+    const name = document.getElementById('product-name').value;
+    const price = document.getElementById('product-price').value;
+    const description = document.getElementById('product-description').value;
+    const imageInput = document.getElementById('product-image');
+    let imageUrl = '';
+
+    // Handle image upload if a file is selected
+    if (imageInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('image', imageInput.files[0]);
+        const uploadRes = await fetch('../api/upload-image.php', {
+            method: 'POST',
+            body: formData
+        });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) {
+            imageUrl = uploadData.url;
+        } else {
+            alert('Image upload failed: ' + uploadData.error);
+            return;
+        }
+    }
+
+    // Prepare product data
+    const productData = {
+        name,
+        price,
+        description,
+        image: imageUrl || imageInput.getAttribute('data-current') || '',
+    };
+    if (id) productData.id = id;
+
+    // Choose method
+    const method = id ? 'PUT' : 'POST';
+    const res = await fetch(apiUrl, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+    });
+    const data = await res.json();
+    if (data.success) {
+        form.reset();
+        document.getElementById('product-id').value = '';
+        loadProducts();
+    } else {
+        alert('Failed to save product: ' + (data.error || data.message));
+    }
+});
+
+// Edit product
+function editProduct(product) {
+    document.getElementById('product-id').value = product.id;
+    document.getElementById('product-name').value = product.name;
+    document.getElementById('product-price').value = product.price;
+    document.getElementById('product-description').value = product.description;
+    const imageInput = document.getElementById('product-image');
+    imageInput.value = '';
+    imageInput.setAttribute('data-current', product.image);
+}
+
+// Delete product
+async function deleteProduct(id) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    const res = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+        loadProducts();
+    } else {
+        alert('Failed to delete product: ' + (data.error || data.message));
+    }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
