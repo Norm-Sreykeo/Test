@@ -7,6 +7,7 @@
   --light-color: #f8fafc;
   --text-color: #374151;
   --border-color: #e5e7eb;
+  --span-color: #fe6161;
 }
 
 * {
@@ -19,7 +20,10 @@ body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  padding-top: 76px;
+  padding-top: 0;
+}
+span{
+  color: var(--span-color);
 }
 
 /* Animations */
