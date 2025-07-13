@@ -26,6 +26,13 @@ $products = [
         "description" => "Elegant black dress for special occasions",
         "image" => "https://i.pinimg.com/736x/f9/bc/3d/f9bc3ddaaa35922fe33989a97a96b347.jpg"
     ]
+     [
+        "id" => 4,
+        "name" => "Classic Denim Dress",
+        "price" => 49.99,
+        "description" => "Elegant black dress for special occasions",
+        "image" => "https://i.pinimg.com/1200x/c3/08/b8/c308b8715d88ca87b8fbe0d19b0da85e.jpg"
+    ]
 ];
 
 // If an ID is provided, return only that product
