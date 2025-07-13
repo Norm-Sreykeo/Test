@@ -21,7 +21,8 @@ async function loadProducts() {
   try {
     loading.style.display = "block"
 
-    const response = await fetch("http://localhost:8080/Test/api/products.php")
+    // For loading all products
+    const response = await fetch("http://localhost:8080/Test11/api/products.php")
     allProducts = await response.json()
     filteredProducts = [...allProducts]
 
@@ -147,7 +148,7 @@ function filterProducts() {
 // View product details in modal
 async function viewProductDetails(productId) {
   try {
-    const response = await fetch(`http://localhost:8080/Test/api/products.php?id=${productId}`)
+    const response = await fetch(`http://localhost:8080/Test11/api/products.php?id=${productId}`)
     const product = await response.json()
 
     // Populate modal
@@ -190,4 +191,23 @@ function debounce(func, wait) {
     clearTimeout(timeout)
     timeout = setTimeout(later, wait)
   }
+}
+// Example function to render products
+function renderProducts(products) {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = '';
+  products.forEach(product => {
+      grid.innerHTML += `
+          <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                  <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                  <div class="card-body">
+                      <h5 class="card-title">${product.name}</h5>
+                      <p class="card-text">${product.description}</p>
+                      <p class="card-text text-primary fw-bold">$${product.price}</p>
+                  </div>
+              </div>
+          </div>
+      `;
+  });
 }

@@ -4,30 +4,27 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
-$products = [
+echo json_encode([
     [
         "id" => 1,
         "name" => "Classic White T-Shirt",
         "price" => 29.99,
         "description" => "Premium cotton t-shirt perfect for everyday wear",
-        "image" => "https://i.pinimg.com/1200x/fc/e3/45/fce3454410442d8c55469235c192ab94.jpg"
+        "image" => "https://i.pinimg.com/1200x/dc/3e/b4/dc3eb40f49b8823f27320ab75fecc969.jpg"
     ],
     [
         "id" => 2,
-        "name" => "Elegant Black Dress",
-        "price" => 89.99,
-        "description" => "Sophisticated black dress for special occasions",
-        "image" => "https://i.pinimg.com/1200x/aa/ea/81/aaea81104ffc321db8a3a6c8d60ff585.jpg"
+        "name" => "Blue Denim Jacket",
+        "price" => 79.99,
+        "description" => "Stylish denim jacket for casual wear",
+        "image" => "https://i.pinimg.com/736x/4e/b4/26/4eb426d7351e4dc20afed8bcc64c3d82.jpg"
     ],
     [
         "id" => 3,
-        "name" => "Leather Wallet",
-        "price" => 49.99,
-        "description" => "Genuine leather wallet with multiple card slots",
-        "image" => "https://i.pinimg.com/736x/00/4f/76/004f764965e3dfc5fa955a535702d83e.jpg"
-    ],
-    // Add more products as needed
-];
-
-echo json_encode($products);
+        "name" => "Black Dress",
+        "price" => 89.99,
+        "description" => "Elegant black dress for special occasions",
+        "image" => "https://i.pinimg.com/736x/f9/bc/3d/f9bc3ddaaa35922fe33989a97a96b347.jpg"
+    ]
+]);
 ?>
